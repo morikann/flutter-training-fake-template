@@ -6,7 +6,6 @@ on:
       - main
 
 jobs:
-
   template-cleanup:
     runs-on: ubuntu-latest
 
@@ -16,9 +15,8 @@ jobs:
 
     timeout-minutes: 10
 
-    if: github.event.repository.name != 'flutter-training-template'
+    if: github.event.repository.name != 'flutter-training-fake-template'
     steps:
-
       # https://github.com/actions/checkout
       - name: Fetch sources
         uses: actions/checkout@v4
