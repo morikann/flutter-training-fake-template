@@ -137,12 +137,14 @@ include: package:yumemi_lints/flutter/$flutterVersion/recommended.yaml
       final settingsJson = _fileSystem.file(
         path.join(githubTemplatesPath, '.vscode/settings.json'),
       );
-      final decodedSettingsJson = jsonDecode(
+      final settingsJsonMap = jsonDecode(
         settingsJson.readAsStringSync(),
       ) as Map<String, dynamic>;
-      decodedSettingsJson['dart.flutterSdkPath'] =
-          '.fvm/versions/$flutterVersion';
-      settingsJson.writeAsStringSync(jsonEncode(decodedSettingsJson));
+      settingsJsonMap['dart.flutterSdkPath'] = '.fvm/versions/$flutterVersion';
+      final formattedJson = JsonEncoder.withIndent('  ').convert(
+        settingsJsonMap,
+      );
+      settingsJson.writeAsStringSync(formattedJson);
 
       // copy templates contents to tmpDir
       Process.runSync(
