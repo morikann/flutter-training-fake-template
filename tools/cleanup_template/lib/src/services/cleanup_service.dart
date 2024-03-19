@@ -140,15 +140,20 @@ include: package:yumemi_lints/flutter/$flutterVersion/recommended.yaml
       ).throwExceptionIfFailed();
 
       // Delete anything except tmpDir
-      Process.runSync('rm', [
-        '-rf',
-        path.join(rootDir.path, '.gitignore'),
-        path.join(rootDirPath, '.github/'),
-        path.join(rootDirPath, 'docs/'),
-        path.join(rootDirPath, 'packages/'),
-        path.join(rootDirPath, 'LICENSE'),
-        path.join(rootDirPath, 'README.md'),
-      ]).throwExceptionIfFailed();
+      Process.runSync(
+        'rm',
+        [
+          '-rf',
+          ...[
+            '.gitignore',
+            '.github/',
+            'docs/',
+            'packages/',
+            'LICENSE',
+            'README.md',
+          ].map((e) => path.join(rootDir.path, e)),
+        ],
+      ).throwExceptionIfFailed();
 
       // copy tmpDir contents to rootDirPath
       Process.runSync(
