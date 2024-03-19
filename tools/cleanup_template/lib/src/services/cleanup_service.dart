@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cleanup_template/src/file_system.dart';
@@ -137,14 +136,14 @@ include: package:yumemi_lints/flutter/$flutterVersion/recommended.yaml
       final settingsJson = _fileSystem.file(
         path.join(githubTemplatesPath, '.vscode/settings.json'),
       );
-      final settingsJsonMap = jsonDecode(
-        settingsJson.readAsStringSync(),
-      ) as Map<String, dynamic>;
-      settingsJsonMap['dart.flutterSdkPath'] = '.fvm/versions/$flutterVersion';
-      final formattedJson = JsonEncoder.withIndent('  ').convert(
-        settingsJsonMap,
-      );
-      settingsJson.writeAsStringSync(formattedJson);
+      final settingsJsonContent = settingsJson.readAsStringSync();
+      if (settingsJsonContent.contains('[[flutterVersion]]')) {
+        final replacedContent = settingsJsonContent.replaceFirst(
+          RegExp(r'\[\[flutterVersion\]\]'),
+          flutterVersion.toString(),
+        );
+        settingsJson.writeAsStringSync(replacedContent);
+      }
 
       // copy templates contents to tmpDir
       Process.runSync(
