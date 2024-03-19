@@ -160,8 +160,6 @@ include: package:yumemi_lints/flutter/$flutterVersion/recommended.yaml
         ['-R', '${tempDir.path}/.', rootDir.path],
       ).throwExceptionIfFailed();
 
-      // delete tmpDir
-      _fileSystem.directory(tempDir.path).deleteSync(recursive: true);
       return ExitStatus.success;
     } on ProcessRunException catch (e) {
       print(e.message);
