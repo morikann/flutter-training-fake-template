@@ -136,14 +136,11 @@ include: package:yumemi_lints/flutter/$flutterVersion/recommended.yaml
       final settingsJson = _fileSystem.file(
         path.join(githubTemplatesPath, '.vscode/settings.json'),
       );
-      final settingsJsonContent = settingsJson.readAsStringSync();
-      if (settingsJsonContent.contains('[[flutterVersion]]')) {
-        final replacedContent = settingsJsonContent.replaceFirst(
-          RegExp(r'\[\[flutterVersion\]\]'),
-          flutterVersion.toString(),
-        );
-        settingsJson.writeAsStringSync(replacedContent);
-      }
+      final replacedContent = settingsJson.readAsStringSync().replaceFirst(
+            RegExp('{{flutterVersion}}'),
+            flutterVersion.toString(),
+          );
+      settingsJson.writeAsStringSync(replacedContent);
 
       // copy templates contents to tmpDir
       Process.runSync(
